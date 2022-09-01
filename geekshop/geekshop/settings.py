@@ -17,7 +17,6 @@ env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
@@ -35,8 +34,6 @@ ALLOWED_HOSTS = ['*']
 
 SOCIAL_AUTH_VK_OAUTH2_KEY = env.str('SOCIAL_AUTH_VK_OAUTH2_KEY')
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('SOCIAL_AUTH_VK_OAUTH2_SECRET')
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env.str('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env.str('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 # Application definition
 
@@ -52,6 +49,7 @@ INSTALLED_APPS = [
     'authapp',
     'basketapp',
     'adminapp',
+    'ordersapp',
 
     'social_django',
 ]
@@ -59,7 +57,6 @@ INSTALLED_APPS = [
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.vk.VKOAuth2',
-    'social_core.backends.google.GoogleOAuth2',
 )
 
 AUTH_USER_MODEL = 'authapp.ShopUser'
@@ -90,19 +87,29 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'mainapp.context_processors.basket',
-                'social_django.context_processors.login_redirect',
                 'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
 
-LOGIN_ERROR_URL = '/'
-
 WSGI_APPLICATION = 'geekshop.wsgi.application'
+
+LOGIN_ERROR_URL = '/'
 
 SOCIAL_AUTH_VK_OAUTH2_IGNORE_DEFAULT_SCOPE = True
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+
+# Database
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
@@ -116,15 +123,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -144,6 +142,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -156,6 +155,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
