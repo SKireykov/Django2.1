@@ -7,4 +7,3 @@ psycopg2-binary
 requests
 gunicorn
 django-environ
-social_auth_app_django
